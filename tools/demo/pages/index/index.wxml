@@ -1,0 +1,59 @@
+<view class="container">
+  <view class="title">原图</view>
+  <svg-icon image-class="image" src="/svgs/love.svg" />
+  <view class="title">mode = "aspectFill"</view>
+  <view class="image-box">
+    <svg-icon image-class="image" src="/svgs/love.svg" mode="aspectFill" />
+  </view>
+  <view class="title">mode = "aspectFit"</view>
+  <view class="image-box">
+    <svg-icon image-class="image" src="/svgs/love.svg" mode="aspectFit" />
+  </view>
+  <view class="title">mode = "widthFix"</view>
+  <view class="image-box">
+    <svg-icon image-class="image" src="/svgs/love.svg" mode="widthFix" />
+  </view>
+  <view class="title">mode = "top"</view>
+  <view class="image-box">
+    <svg-icon image-class="image" src="/svgs/love.svg" mode="top" />
+  </view>
+  <view class="title">
+    <text>例一：指定 color\ncolor = "peachpuff"</text>
+  </view>
+  <svg-icon image-class="image" color="peachpuff" src="/svgs/love.svg" />
+  <view class="title">
+    <text decode>例二：指定 colors 数组\ncolors = {{utils.stringify(colorsArray)}}</text>
+  </view>
+  <svg-icon image-class="image" colors="{{colorsArray}}" src="/svgs/love.svg" />
+  <view class="title">
+    <text>例三：同时指定 color 与 colors 数组\n（与例一、例二相同取值）</text>
+  </view>
+  <svg-icon image-class="image" color="peachpuff" colors="{{colorsArray}}" src="/svgs/love.svg" />
+  <view class="title">
+    <text decode>例四：指定 colors 对象\ncolors = {{utils.stringify(colorsObject)}}</text>
+  </view>
+  <svg-icon image-class="image" colors="{{colorsObject}}" src="/svgs/love.svg" />
+  <view class="title">
+    <text>例五：同时指定 color 与 colors 对象\n（与例一、例四相同取值）</text>
+  </view>
+  <svg-icon image-class="image" color="peachpuff" colors="{{colorsObject}}" src="/svgs/love.svg" />
+</view>
+
+<wxs module="utils">
+  function stringify(colors) {
+    var regexp = getRegExp(',|\[|\]|\{|\}|\:', 'g');
+    var json = JSON.stringify(colors).replace(regexp, function(matched) {
+      if (matched == ',') return ',\n&nbsp;&nbsp;&nbsp;&nbsp;';
+      if (matched == '[') return '[\n&nbsp;&nbsp;&nbsp;&nbsp;';
+      if (matched == '{') return '{\n&nbsp;&nbsp;&nbsp;&nbsp;';
+      if (matched == ']') return '\n]';
+      if (matched == '}') return '\n}';
+      if (matched == ':') return ':&nbsp;&nbsp;';
+      return matched;
+    });
+    return json;
+  }
+  module.exports = {
+    stringify: stringify,
+  };
+</wxs>
