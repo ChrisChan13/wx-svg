@@ -1,6 +1,6 @@
 {
   "name": "wx-svg",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "微信小程序 SVG 组件，支持对 SVG 重新着色",
   "main": "miniprogram_dist/index.js",
   "miniprogram": "miniprogram_dist",
