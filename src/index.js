@@ -2,6 +2,18 @@ import { encode } from './base64';
 
 const fs = wx.getFileSystemManager();
 
+// 临时文件缓存
+const tempFileMap = new Map();
+
+// 同步 wx.downloadFile
+const downloadFileSync = (url) => new Promise((resolve, reject) => {
+  wx.downloadFile({
+    url,
+    success: resolve,
+    fail: reject,
+  });
+});
+
 Component({
   externalClasses: ['image-class'],
   properties: {
@@ -11,12 +23,28 @@ Component({
     mode: String, // svg 裁剪、缩放的模式
   },
   observers: {
-    'src, color, colors'(src, color, colors) {
+    async 'src, color, colors'(src, color, colors) {
       try {
         if (color || (colors && (
           colors.length > 0 || Object.keys(colors).length > 0
         ))) {
-          let data = fs.readFileSync(src, 'utf8');
+          let data;
+          // 网络资源下载，排除开发工具临时路径格式: http://tmp/
+          if (/^http(s)?:\/\//.test(src) && !/^http:\/\/tmp\//.test(src)) {
+            let tempFilePath = tempFileMap.get(src);
+            try {
+              if (!tempFilePath) throw tempFilePath;
+              // 检查临时文件是否存在
+              fs.accessSync(tempFilePath);
+            } catch (err) {
+              tempFilePath = (await downloadFileSync(src)).tempFilePath;
+              // 缓存临时文件
+              tempFileMap.set(src, tempFilePath);
+            }
+            data = fs.readFileSync(tempFilePath, 'utf8');
+          } else {
+            data = fs.readFileSync(src, 'utf8');
+          }
           // eslint-disable-next-line no-param-reassign
           if (!colors) colors = {}; // 默认值
           if (/(fill|stroke)=".*?"/.test(data)) {

@@ -87,10 +87,12 @@ colorsObject: { black: '#ff0000', '#fff': '#00ff00', '#808080': '#cdcdcd' }
 
 ||类型|说明|默认值|
 |:-|:-|:-|:-|
-|`src`|`string`|SVG 资源地址，仅支持本地路径|-|
+|`src`|`string`|SVG 资源地址（支持绝对路径、临时路径以及网络资源）|-|
 |`color`|`string`|SVG 颜色|-|
 |`colors`|`array` \| `object`|SVG 颜色配置，支持数组或对象|-|
 |`mode`|`string`|SVG 裁剪、缩放的模式（与 `image` 标签相同）|-|
+
+* *当 src 传入网络资源并重新着色时，请注意将网络资源的域名配置于小程序的 downloadFile 合法域名中*
 
 ### 事件
 
@@ -107,7 +109,7 @@ colorsObject: { black: '#ff0000', '#fff': '#00ff00', '#808080': '#cdcdcd' }
 
 ## Demo
 
-克隆本仓库，运行 npm i & npm run dev，将 miniprogram_dev 文件夹导入微信开发者工具
+克隆本仓库，运行 `npm i & npm run dev`，将 miniprogram_dev 文件夹导入微信开发者工具
 
 ## 效果预览
 
